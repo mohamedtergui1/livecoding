@@ -13,14 +13,15 @@ class Router
 
     public function router()
     {
-        $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
+        // $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
+        $uri = $_SERVER['REQUEST_URI'];
         $uri = explode('/', trim(strtolower($uri), '/'));
-       
+        
         unset($uri[0]);
-        if (!empty($uri[1])) {
+        if (isset($uri[1])) {
             $uri[1]= ucwords($uri[1]);
             $controller = $uri[1] . 'Controller';
-            var_dump($controller);
+            
           
             unset($uri[1]);
             $controller = 'App\Controller\\' . $controller;
@@ -28,7 +29,7 @@ class Router
             if (class_exists($controller)) {
                 $this->controller = $controller;
             } else {
-                echo "error not fined";
+                echo "error 404";
                 exit;
             }
         }
@@ -37,19 +38,21 @@ class Router
         $class = new $class;
 
 
-        if (isset($uri[1])) {
+        if (isset($uri[2])) {
 
-            $method = $uri[1];
-            unset($uri[1]);
+            $method = $uri[2];
+            unset($uri[2]);
 
-            if (method_exists($class, $method)) {
+            if (method_exists($class, $method)) 
+            {
                 $this->method = $method;
             }
+           
             
         }
 
 
-        if (isset($uri[2])) {
+        if (isset($uri[3])) {
             $this->params = array_values($uri);
         }
 
