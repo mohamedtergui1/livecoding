@@ -1,2 +1,3 @@
 <?php 
-   echo 'we are in the index';
+   // $uri= $_SERVER['REQUEST_URI'];
+  require '../core/web.php';
